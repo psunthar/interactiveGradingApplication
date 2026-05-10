@@ -357,6 +357,57 @@ border-radius:10px;
 .curLabels{
 text-align:right;
 }
+
+.freqRow {
+display:block;
+width:100%;
+border:0;
+}
+td.freqRowLabel {
+display:inline-block;
+width:3.5%;
+border:0;
+padding:0;
+text-align:right;
+font-size:11px;
+color:#999;
+font-style:italic;
+margin-right:0.5%;
+background:transparent;
+}
+td.freqSlot {
+padding:1px 0;
+width:7.4%;
+display:inline-block;
+text-align:center;
+border:0;
+margin-right:1%;
+background:transparent;
+box-sizing:border-box;
+}
+td.freqSlot:hover {
+background:transparent;
+}
+.freqLabels {
+color:#4d4d4d;
+font-weight:bold;
+font-size:13px;
+margin:0;
+display:inline-block;
+}
+.freqVals {
+color:#008000;
+font-weight:bold;
+font-size:16px;
+margin:0;
+display:inline-block;
+}
+.pctVals {
+color:#666;
+font-size:11px;
+margin:0;
+display:inline-block;
+}
 /*
 .plotControls li.label{
 width:5%;

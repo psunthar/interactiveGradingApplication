@@ -107,8 +107,8 @@ MyInstance.prototype={
 					return;
 					}
 				this.gradeCount=9;
-				this.gradeLabels=["FF","DD","CD","CC","BC","BB","AB","AA","AP"];
-				this.gradeCredits=[0,4,5,6,7,8,9,10,10];			
+				this.gradeLabels=["FR","DD","CD","CC","BC","BB","AB","AA","AP"];
+				this.gradeCredits=[0,4,5,6,7,8,9,10,10];
 				var delta=(this.refValue-(this.refValue*0.4))/7;
 				var least=(this.refValue*0.4);
 				console.log("grade count = "+this.gradeCount+" ref value= "+this.refValue+" delta "+ delta+" least = "+least );
@@ -135,7 +135,7 @@ MyInstance.prototype={
 				
 				console.log("control is in confirm data iitbAbsolute mode");
 				this.gradeCount=9;
-				this.gradeLabels=["FF","DD","CD","CC","BC","BB","AB","AA","AP"];
+				this.gradeLabels=["FR","DD","CD","CC","BC","BB","AB","AA","AP"];
 				this.gradeCredits=[0,4,5,6,7,8,9,10,10];			
 				this.gradeValuesFixed=[30,40,50,60,70,80,90,100];
 				this.gradeValuesMovable=[30,40,50,60,70,80,90,100];
@@ -203,7 +203,7 @@ MyInstance.prototype={
 									}
 							}	
 						this.gradeCredits.unshift(0);
-						this.gradeLabels.unshift("F");
+						this.gradeLabels.unshift("FR");
 						this.gradeCount++;
 						//clear grade bound lists before computing.................................
 						this.gradeValuesMovable=[];
@@ -277,8 +277,8 @@ MyInstance.prototype={
 									}
 							}	
 						this.gradeCredits.unshift(0);
-						this.gradeLabels.unshift("F");
-						this.gradeCount++;		
+						this.gradeLabels.unshift("FR");
+						this.gradeCount++;
 						//validation of all inputs and report to user the same......
 						//check once for any non validated variables before confirming	
 						
@@ -442,12 +442,13 @@ MyInstance.prototype={
 									max: 2,
 									min: 1
 								}
-							} 
+							}
 						}
-							
-					});	
-			
 
+					});
+
+			this.getStats();
+			this.refreshFreqStrip();
 
 				  },
 				  /*****************************************************
@@ -492,7 +493,9 @@ MyInstance.prototype={
 								this.myAnnotationsMovable[parseInt(index)].value=parseInt(newVal);
 								}
 							}
-						
+
+						this.getStats();
+						this.refreshFreqStrip();
 						this.myChart.update()
 						},
 					
@@ -566,10 +569,9 @@ MyInstance.prototype={
 								console.log(e.type,e, e.subject.config.value);
 								//recompute statistics and position after drag end
 								//begin validating drag movement........
-								obj.getStats();	
 								obj.validateBarMovement(e);
-								
-								
+								obj.getStats();
+
 								var Lboxes=document.getElementsByClassName("curLabels");
 								var Vboxes=document.getElementsByClassName("curVals");
 								for(var i=0;i<obj.gradeLabels.length-1;i++){
@@ -582,10 +584,11 @@ MyInstance.prototype={
 									Lboxes[i].style.display="none";
 									Vboxes[i].style.display="none";
 									}
-									
+
+								obj.refreshFreqStrip();
 								obj.myChart.update();
 								console.log("chart updated");
-								//end of validate drag......................		
+								//end of validate drag......................
 
 								},
 							onClick: function(e) {
@@ -596,14 +599,35 @@ MyInstance.prototype={
 				/*******************************************************
 				 * 					end of method make annotation
 				 * *****************************************************/
-				
-	 
+
+		refreshFreqStrip:function(){
+			var FreqLabels=document.getElementsByClassName("freqLabels");
+			var FreqVals=document.getElementsByClassName("freqVals");
+			var PctVals=document.getElementsByClassName("pctVals");
+			var total=this.Data.length;
+			for(var i=0;i<this.gradeLabels.length;i++){
+				FreqLabels[i].style.display="inline-block";
+				FreqVals[i].style.display="inline-block";
+				PctVals[i].style.display="inline-block";
+				FreqLabels[i].innerHTML=this.gradeLabels[i];
+				var f=this.gradeFrequencyDynamic[i];
+				FreqVals[i].innerHTML=(f==null?0:f);
+				var pct=(total>0 && f!=null) ? (f/total*100).toFixed(1) : "0.0";
+				PctVals[i].innerHTML=pct+"%";
+			}
+			for(var i=this.gradeLabels.length;i<FreqLabels.length;i++){
+				FreqLabels[i].style.display="none";
+				FreqVals[i].style.display="none";
+				PctVals[i].style.display="none";
+			}
+		},
+
 	/***************************************************************************************************************************************
-	* 							
+	*
 	* 															Tab3 methods
-	* 	
+	*
 	* *************************************************************************************************************************************/
-	
+
 		getStats:function (){
 			console.log("calling get statistics function with grade values fixed = "+ this.gradeValuesFixed);
 			this.gradeValuesMovable=[];
