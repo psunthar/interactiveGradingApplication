@@ -638,21 +638,30 @@ MyInstance.prototype={
 			var FreqVals=document.getElementsByClassName("freqVals");
 			var PctVals=document.getElementsByClassName("pctVals");
 			var total=this.Data.length;
+			var freqSum=0;
+			var pctSum=0;
 			for(var i=0;i<this.gradeLabels.length;i++){
 				FreqLabels[i].style.display="inline-block";
 				FreqVals[i].style.display="inline-block";
 				PctVals[i].style.display="inline-block";
 				FreqLabels[i].innerHTML=this.gradeLabels[i];
 				var f=this.gradeFrequencyDynamic[i];
-				FreqVals[i].innerHTML=(f==null?0:f);
-				var pct=(total>0 && f!=null) ? (f/total*100).toFixed(1) : "0.0";
-				PctVals[i].innerHTML=pct+"%";
+				if(f==null) f=0;
+				FreqVals[i].innerHTML=f;
+				freqSum+=f;
+				var pct=total>0 ? (f/total*100) : 0;
+				PctVals[i].innerHTML=pct.toFixed(1)+"%";
+				pctSum+=pct;
 			}
 			for(var i=this.gradeLabels.length;i<FreqLabels.length;i++){
 				FreqLabels[i].style.display="none";
 				FreqVals[i].style.display="none";
 				PctVals[i].style.display="none";
 			}
+			var totalVal=document.getElementsByClassName("freqTotalVal")[0];
+			var totalPct=document.getElementsByClassName("freqTotalPct")[0];
+			if(totalVal) totalVal.innerHTML=freqSum;
+			if(totalPct) totalPct.innerHTML=pctSum.toFixed(1)+"%";
 		},
 
 	/***************************************************************************************************************************************
@@ -783,6 +792,10 @@ MyInstance.prototype={
 				tableRows[i].style.display="none";
 				}
 			var avgTable=document.getElementsByClassName("avgTable")[0].children;
+				avgTable[0].innerHTML="Total";
+				avgTable[1].innerHTML=this.Data.length;
+				avgTable[1].style.color="#4d4d4d";
+				avgTable[1].style.fontWeight="bold";
 				avgTable[3].innerHTML="Average GPA";
 				avgTable[4].innerHTML=this.getAverageGPA(this.gradeFrequencyStatic);
 				avgTable[4].style.color="red";
@@ -811,8 +824,8 @@ MyInstance.prototype={
 				var maxLimit=positions[i];
 				var sum=0;
 				for(var j=index;j<dataSet.length;j++){
-				  console.log("datsa os: "+dataSet[j]);
-				  if(dataSet[j]<maxLimit  && dataSet[j]>=min){
+				  var v=Math.round(dataSet[j]);
+				  if(v>=min && v<maxLimit){
 					sum++;
 					cumSum++;
 				  }
@@ -822,7 +835,6 @@ MyInstance.prototype={
 				}
 					min=positions[i];
 					index=index+sum;
-				//console.log(Data);
 				result.push(sum);
 			  }
 			  result.push(dataSet.length-cumSum);

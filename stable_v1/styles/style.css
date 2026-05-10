@@ -377,11 +377,11 @@ background:transparent;
 }
 td.freqSlot {
 padding:1px 0;
-width:7.4%;
+width:6.5%;
 display:inline-block;
 text-align:center;
 border:0;
-margin-right:1%;
+margin-right:0.4%;
 background:transparent;
 box-sizing:border-box;
 }
@@ -406,6 +406,43 @@ display:inline-block;
 color:#666;
 font-size:11px;
 margin:0;
+display:inline-block;
+}
+td.freqTotalCell {
+padding:1px 2px 1px 4px;
+width:8%;
+display:inline-block;
+text-align:center;
+border:0;
+border-left:2px solid #BFBFBF;
+margin-left:2px;
+margin-right:0;
+background:transparent;
+box-sizing:border-box;
+}
+td.freqTotalCell:hover {
+background:transparent;
+}
+.freqTotalLabel {
+margin:0;
+color:#4d4d4d;
+font-weight:bold;
+font-size:13px;
+font-style:italic;
+display:inline-block;
+}
+.freqTotalVal {
+margin:0;
+color:#4d4d4d;
+font-weight:bold;
+font-size:16px;
+display:inline-block;
+}
+.freqTotalPct {
+margin:0;
+color:#4d4d4d;
+font-size:11px;
+font-weight:bold;
 display:inline-block;
 }
 /*
