@@ -410,7 +410,20 @@ MyInstance.prototype={
 				Vboxes[i].style.display="none";
 				}
 				
-			//this.chartBg=prompt("Enter color");	
+			//build x-axis gridline color/width arrays: bold line at even marks, faint at odd
+			var xGridColors=[];
+			var xGridWidths=[];
+			for(var i=0;i<labels.length;i++){
+				if(i%2===0){
+					xGridColors.push('rgba(0,0,0,0.18)');
+					xGridWidths.push(1);
+				}else{
+					xGridColors.push('rgba(0,0,0,0.05)');
+					xGridWidths.push(0.5);
+				}
+			}
+
+			//this.chartBg=prompt("Enter color");
 			this.myChart = new Chart(ctx, {
 						type:this.chartType,
 						data:  {
@@ -426,7 +439,27 @@ MyInstance.prototype={
 						},
 						options: {     responsive:false,
 									   title: {        display: true    },
-									  scales: {       yAxes: [{suggestedMax: this.yMax+5,position: 'left',gridLines: {zeroLineColor: "rgba(0,255,0,1)"}, scaleLabel: {display: true,labelString: 'Frequency'},ticks: { beginAtZero:true, min: 0, max:this.yMax+2 } 		}]    } ,	
+									  scales: {
+										xAxes: [{
+											id:'x-axis-0',
+											ticks: {
+												autoSkip:false,
+												maxRotation:0,
+												minRotation:0,
+												callback:function(value,index){
+													return (index%2===0)?value:'';
+												}
+											},
+											gridLines: {
+												display:true,
+												drawTicks:true,
+												tickMarkLength:5,
+												color:xGridColors,
+												lineWidth:xGridWidths
+											}
+										}],
+										yAxes: [{suggestedMax: this.yMax+5,position: 'left',gridLines: {zeroLineColor: "rgba(0,255,0,1)"}, scaleLabel: {display: true,labelString: 'Frequency'},ticks: { beginAtZero:true, min: 0, max:this.yMax+2 } 		}]
+									} ,
 								  annotation: {
 												events: ['drag'],
 												annotations:this.myAnnotations
