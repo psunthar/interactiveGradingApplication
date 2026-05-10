@@ -747,7 +747,7 @@ MyInstance.prototype={
 			  var result=[];
 			  var min=-Infinity;
 			  var dataSet=this.Data.slice();
-			  dataSet.sort();
+			  dataSet.sort(function(a,b){return a-b;});
 			  var index=0;
 			  var cumSum=0;
 			  for(var i=0;i<positions.length;i++){
